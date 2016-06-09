@@ -48,13 +48,14 @@ export default {
   .show-card
     float: left
     margin: 20px 10px
-    box-shadow: 0px 0px 17px rgba(0,0,0,0.6)
+    box-shadow: 5px 5px 26px rgba(0, 0, 0, 0.68)
+    border: solid 1px #000
     border-radius: 2px
     background-color: rgba(0,0,0,0.44)
 
     .poster
       width: 100%
-      border: solid 1px #000
+      border-bottom: solid 1px #000
       box-sizing: border-box
 
     .providers

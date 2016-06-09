@@ -49,7 +49,7 @@ export default {
         .then((x) => search.queryGuideBoxId(x)
           .then((x) => {this.showInfo = search.providerFilter(x)} )
           .then(() => this.searching = false)
-          .catch(() => alert('Something went wront. Please double check the spelling')))
+          .catch(() => { this.searching = undefined, this.showInfo = [],  alert('Something went wront. Please double check the spelling') }))
     }
   }
 }
