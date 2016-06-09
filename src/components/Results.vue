@@ -1,16 +1,19 @@
 <template lang="jade">
-  section.results-section
+  section.results
     .searching(v-show="searching === true" transition="fade")
       .pacman
       .dot
 
-    .results(v-show="showInfo.length === 0 && searching === false" transition="fade")
+    .not-found(v-show="showInfo.length === 0 && searching === false" transition="fade")
       h1 Maybe Try Blockbuster....
 
     .show-card(v-for="show in showInfo")
-      img(:src='show.img')
-      h1{{ show.title }}
-      h3 Streaming on <span v-for="provider in show.providers"> {{ provider}} </span>
+      img.poster(:src='show.img')
+      h1 {{ show.title }}
+      h1(v-if="typeOf")
+      //- h3 Streaming on <span v-for="provider in show.providers"> {{ provider}} </span>
+      .providers
+        img(v-for="provider in show.providers" v-bind:src="'http://localhost:8002/' + provider + '.svg'")
 </template>
 
 <script>
@@ -33,8 +36,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="sass">
-.results-section
-  // background-color: #5F5E5E
+.results
   position: relative
   display: flex
   flex-wrap: wrap
@@ -43,40 +45,50 @@ export default {
   color: rgba(255,255,255,0.5)
   padding: 20px 0
 
-.searching, .results
-  position: absolute
-  width: 100%
-  height: 770px
-  min-height: 100%
-  top: 0
-  left: 0
-  background-color: #5F5E5E
-  z-index: 10
+  .show-card
+    float: left
+    margin: 20px 10px
+    box-shadow: 0px 0px 17px rgba(0,0,0,0.6)
+    border-radius: 2px
+    background-color: rgba(0,0,0,0.44)
 
-.results h1
-  margin-top: 100px
-  font-size: 3rem
+    .poster
+      width: 100%
+      border: solid 1px #000
+      box-sizing: border-box
 
-.show-card
-  float: left
-  padding: 1px
-  margin: 20px 10px
-  box-shadow: 0px 0px 17px rgba(0,0,0,0.6)
-  border-radius: 5px
-  background-color: rgba(0,0,0,0.44)
+    .providers
+      display: flex
+      justify-content: center
+      margin: 0 0 7px
 
-  img
+      img
+        padding: 5px 10px
+        height: 25px
+        &:not(:first-child)
+          border-left: solid 2px
+
+  .searching, .not-found
+    position: absolute
     width: 100%
+    // height: 770px
+    min-height: 100%
+    top: 0
+    left: 0
+    background-color: #5F5E5E
+    z-index: 10
+    padding-top: 100px
+    font-size: 3rem
 
-h1
-  color: #41B883
-  margin: 9px
+  h1
+    color: #41B883
+    margin: 5px
 
 // CSS Loader Animation
 
 $width: 100px
 $height: $width / 2
-$amber: #FFC107
+$green: #41B883
 $grey: #ccc
 $time: 0.4s
 
@@ -124,11 +136,11 @@ $time: 0.4s
 .pacman:before, .pacman:after
   content: ''
   position: absolute
-  background: $amber
+  background: $green
   width: $width
   height: $height
   left: 50%
-  top: 50%
+  top: 140px
   margin-left: -$width / 2
   margin-top: -$height
   border-radius: $height $height 0 0
@@ -144,7 +156,7 @@ $time: 0.4s
 .dot
   position: absolute
   left: 50%
-  top: 50%
+  top: 140px
   width: $height / 5
   height: $height / 5
   margin-top: -$height / 10

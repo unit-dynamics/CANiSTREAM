@@ -46,8 +46,8 @@ class Search {
         xhr[index].onreadystatechange = () => {
           if(xhr[index].readyState === 4 && xhr[index].status === 200) {
             item.rawInfo = (JSON.parse(xhr[index].responseText))
-            xhrIsFinished.push(true) // Tracking if finished in order to return the Promise
-            showArray.push(item) // Creating the new Array to pass on to the filter
+            xhrIsFinished.push(true) // Track how many shows have finished so on the last one, we can resolve the promise
+            showArray.push(item) // Add the new Item containing all the show info
             if (xhrIsFinished.length === array.length) {
               resolve(showArray) // Resolve the Promise
             } 
@@ -62,42 +62,46 @@ class Search {
   }
 
   providerFilter (obj) {
-    console.log('providerFilter inital obj =', obj)
+    // console.log('providerFilter inital obj =', obj)
     let regProviders = /(netflix|hulu_plus|amazon_prime|hbo_now|hulu_free)/
-    let objSourcePath = obj[0].type === 'show' ? 'rawInfo.results.web.episodes.all_sources' : 'rawInfo.subscription_web_sources'
 
     if (obj[0].type === 'show') { //Filter Shows
-      console.log('show filter')
+      // console.log('show filter')
       obj.forEach((item) => {
         item.rawInfo.results.web.episodes.all_sources.forEach((x) => {
           if (x.source.match(regProviders)) {
-            item.providers.push(x.source)
+            item.providers[x.source] = x.source
           }
         })
       })
     }else{ //Filter Movies
-      console.log('movie filter', obj)
+      // console.log('movie filter')
       obj.forEach((item) => {
-        console.log(item.title)
         item.rawInfo.subscription_web_sources.forEach((x) => {
-          console.log(x.source)
           if (x.source.match(regProviders)) {
-            console.log('source found', x.source)
-            item.providers.push(x.source)
+            item.providers[x.source] = x.source
           }
         })
       })
     }
 
-    let streamableVideos = obj.filter((item) => {
-      return item.providers.length > 0
+    // Delete hulu_free if it also has hulu_plus, this way only one logo shows up 
+    obj.forEach((item) => {
+      if (item.providers["hulu_plus"] && item.providers["hulu_free"]) { 
+        delete item.providers["hulu_free"]
+      }
     })
-    console.log('providerFilter streamableVideos = ', streamableVideos)
+
+    // Filter out any shows that are not on one of our providers
+    let streamableVideos = obj.filter((item) => {
+      return Object.keys(item.providers).length > 0
+    })
+
     return streamableVideos
   }
 
   createIdArray (obj, type) {
-    console.log('From Array Fucntion', obj, type)
+    // console.log('From Array Fucntion', obj, type)
     let ids = []
 
     obj.results.forEach((item) => {
@@ -106,26 +110,14 @@ class Search {
       x.title = item.title
       x.type = type
       x.img = type === 'show' ? item.artwork_448x252 : item.poster_400x570
-      x.providers = []
+      x.providers = {}
       x.rawInfo = {}
       ids.push(x)
     })
+
     ids.splice(5) // Limit results to only 5
-    console.log('idArray =' , ids)
     return ids
   }
 }
-// export default search
+
 export default new Search()
-
-
-// Request
-// Create Array
-// Get video info from id
-// pass to filter to filter shows
-
-// --- Issues ---
-// 1. ID query is out of order and returning before all that data is returned
-// x2. providerFiler is retruning an empty array
-// x3. make sure regex is working with match in the filter
-// 4. return object of movies to view after processing

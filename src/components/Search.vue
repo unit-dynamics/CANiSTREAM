@@ -1,6 +1,6 @@
 <template lang="jade">
   // Search Section
-  section.search-section
+  section.search
     img(class="logo" src="../assets/logo.png")
     form
       input(type="text" placeholder="Enter Title..." v-model="search")
@@ -57,7 +57,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style  lang="sass">
-.search-section
+.search
   padding: 20px 0
   background-color: #000
   color: #FFF
@@ -73,9 +73,6 @@ export default {
     cursor: pointer
     transition: all 0.3s ease-in-out
 
-    // &:hover:after
-    //   background-color: green
-
     &:after
       position: absolute
       content: ''
@@ -86,9 +83,6 @@ export default {
       left: 50%
       margin-left: -149px
       transition: all 0.3s ease-in-out
-
-      
-
 
   input[type="radio"]
     display: none
@@ -113,9 +107,7 @@ export default {
       outline: none
       background-color: #717171
       border: solid 2px #717171
-
-
-
+      
   h1
     color: #42b983
 </style>
