@@ -11,9 +11,9 @@
       img.poster(:src='show.img')
       h1 {{ show.title }}
       h1(v-if="typeOf")
-      //- h3 Streaming on <span v-for="provider in show.providers"> {{ provider}} </span>
       .providers
-        img(v-for="provider in show.providers" v-bind:src="'http://localhost:8002/' + provider + '.svg'")
+        //- img(v-for="provider in show.providers" v-bind:src="'http://localhost:8002/' + provider + '.svg'") // Local Server Testing
+        img(v-for="provider in show.providers" v-bind:src="'images/' + provider + '.svg'")
 </template>
 
 <script>
