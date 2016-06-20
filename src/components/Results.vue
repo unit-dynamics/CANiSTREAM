@@ -45,6 +45,10 @@ export default {
   color: rgba(255,255,255,0.5)
   padding: 20px 0
 
+  // Ipad and smaller
+  @media (max-width: 1204px)
+    padding: 0 0
+
   .show-card
     float: left
     margin: 20px 10px
@@ -52,6 +56,10 @@ export default {
     border: solid 1px #000
     border-radius: 2px
     background-color: rgba(0,0,0,0.44)
+
+    // Ipad and smaller
+    @media (max-width: 1204px)
+      margin: 10px 10px
 
     .poster
       width: 100%
@@ -72,7 +80,6 @@ export default {
   .searching, .not-found
     position: absolute
     width: 100%
-    // height: 770px
     min-height: 100%
     top: 0
     left: 0
@@ -80,6 +87,10 @@ export default {
     z-index: 10
     padding-top: 100px
     font-size: 3rem
+
+    // Ipad and smaller
+    @media (max-width: 1204px)
+      font-size: 2rem
 
   h1
     color: #41B883
