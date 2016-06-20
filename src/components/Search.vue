@@ -66,7 +66,6 @@ export default {
     font-size: 2.4rem
     margin: 0px
     color: #42b983
-
     span
       color: #D2D2D2
 
